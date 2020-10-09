@@ -22,4 +22,8 @@ To remove all containers:
 
     $ docker-compose rm --all
 
+Remove all dangling images:
+
+    $ docker rmi -f $(docker images -qf dangling=true)
+
 ### Deploy
