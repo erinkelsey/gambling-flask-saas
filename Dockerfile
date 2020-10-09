@@ -5,13 +5,8 @@ RUN mkdir -p $INSTALL_PATH
 
 WORKDIR $INSTALL_PATH
 
-# COPY requirements.txt requirements.txt
-# RUN pip install -r requirements.txt
-
-COPY Pipfile ./ 
-COPY Pipfile.lock ./
-RUN pip install pipenv
-RUN pipenv install --dev --system --deploy
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . .
 

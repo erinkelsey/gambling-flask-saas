@@ -10,6 +10,10 @@ Hosted example:
 
     $ docker-compose up --build
 
+### Stop
+
+    $ docker-compose stop
+
 ### Check Currently Running Images
 
     $ docker-compose ps
