@@ -6,12 +6,20 @@ Hosted example:
 
 ### Setup
 
-### Install
-
 ### Build and Run
 
     $ docker-compose up --build
 
-### Build
+### Check Currently Running Images
+
+    $ docker-compose ps
+
+### Remove Docker Containers
+
+    $ docker-compose rm -f
+
+To remove all containers:
+
+    $ docker-compose rm --all
 
 ### Deploy
