@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 services:
   website:
@@ -9,8 +9,16 @@ services:
         --reload
         "snakeeyes.app:create_app()"
     environment:
-      PYTHONUNBUFFERED: 'true'
+      PYTHONUNBUFFERED: "true"
     volumes:
-      - '.:/snakeeyes'
+      - ".:/snakeeyes"
+    # ports:
+    #   - "8000:8000"
+    expose:
+      - 8000
+  nginx:
+    build: ./services/nginx
     ports:
-      - '8000:8000'
+      - 80:80
+    depends_on:
+      - website
