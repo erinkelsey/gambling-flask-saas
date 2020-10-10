@@ -1,7 +1,27 @@
 from decouple import config
 
 DEBUG = config("DEBUG", default=False, cast=bool)
-
-# SERVER_NAME = config("SERVER_NAME")
-
 SECRET_KEY = config("SECRET_KEY")
+
+if DEBUG or TESTING:
+    SERVER_NAME = 'localhost'
+
+# Toolbar
+DEBUG_TB_INTERCEPT_REDIRECTS = False
+
+# Flask-Mail.
+MAIL_USERNAME = config("MAIL_USERNAME")
+MAIL_PASSWORD = config("MAIL_PASSWORD")
+MAIL_DEFAULT_SENDER = config("MAIL_DEFAULT_SENDER")
+MAIL_SERVER = config("MAIL_SERVER")
+MAIL_PORT = config("MAIL_PORT")
+MAIL_USE_TLS = True
+MAIL_USE_SSL = False
+
+# Celery.
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND")
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_REDIS_MAX_CONNECTIONS = 5

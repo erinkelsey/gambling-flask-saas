@@ -4,7 +4,9 @@ Snake Eyes online gambling game, implemented as a SaaS (Software-as-a-Service) a
 
 Hosted example:
 
-### Setup
+## Setup
+
+In order to run with Docker Compose locally, you will need a .env file in the main folder with the following environment variables:
 
 ## Build and Run
 
@@ -52,6 +54,8 @@ Check code quality with flake8:
 
 ## Click CLI
 
+The snackeeyes Click CLI is used to make it easier to run the commands in the above Testing section.
+
 Create egg.info file:
 
     $ pip install --editable .
@@ -97,6 +101,16 @@ Initialize Elastic Beanstalk Environment:
 
     $ eb create
 
+Add the environment variables from the .env file to the environment variables in environment configuration. Make sure these are your production environment variables, not the local ones.
+
 Deploy Updates to Elastic Beanstalk:
 
     $ eb deploy
+
+Check status:
+
+    $ eb status --verbose
+
+View and/or modify config
+
+    $ eb config
