@@ -1,6 +1,7 @@
 from decouple import config
 
 DEBUG = config("DEBUG", default=False, cast=bool)
+TESTING = config("TESTING", default=False, cast=bool)
 SECRET_KEY = config("SECRET_KEY")
 
 if DEBUG or TESTING:
