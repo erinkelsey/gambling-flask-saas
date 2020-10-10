@@ -6,7 +6,7 @@ Hosted example:
 
 ### Setup
 
-### Build and Run
+## Build and Run
 
     $ docker-compose up --build
 
@@ -34,7 +34,7 @@ Remove all dangling images:
 
     $ docker image prune -a
 
-### Testing
+## Testing
 
 NOTE: Make sure that you are running the app with Docker Compose
 
@@ -50,7 +50,42 @@ Check code quality with flake8:
 
     $ docker-compose exec website flake8 . --exclude __init__.py
 
-### Deploy to AWS Elastic Beanstalk
+## Click CLI
+
+Create egg.info file:
+
+    $ pip install --editable .
+
+NOTE: this is include in the repository
+
+### Running Commands
+
+View all CLI commands:
+
+    $ docker-compose exec website snakeeyes
+
+Test:
+
+    $ docker-compose exec website snakeeyes test
+
+Coverage:
+
+    $ docker-compose exec website snakeeyes cov
+
+flake8:
+
+    $ docker-compose exec website snakeeyes flake8
+    $ docker-compose exec website snakeeyes flake8 --no-skip-init
+
+Help:
+
+    $ docker-compose exec website snakeeyes <command> --help
+
+Example:
+
+    $ docker-compose exec website snakeeyes flake8 --help
+
+## Deploy to AWS Elastic Beanstalk
 
 Initialize Elastic Beanstalk Application:
 
