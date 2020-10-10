@@ -1,3 +1,5 @@
-DEBUG = True
+from decouple import config
 
-SERVER_NAME = 'localhost:8000'
+DEBUG = config("DEBUG", default=False, cast=bool)
+
+SERVER_NAME = config("SERVER_NAME")
