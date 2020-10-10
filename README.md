@@ -1,6 +1,6 @@
-# Snake Eyes SAAS Project
+# Snake Eyes SaaS Project
 
-Snake Eyes online gambling game, implemented as a SAAS (Software-as-a-Service) app with Flask, Docker, Docker Compose, Stripe, Redis, PostgreSQL, Celery, Gunicorn, nginx and AWS Elastic Beanstalk.
+Snake Eyes online gambling game, implemented as a SaaS (Software-as-a-Service) app with Flask, Docker, Docker Compose, Stripe, Redis, PostgreSQL, Celery, Gunicorn, nginx and AWS Elastic Beanstalk.
 
 Hosted example:
 
@@ -22,13 +22,33 @@ Hosted example:
 
     $ docker-compose rm -f
 
-To remove all containers:
+To remove all stopped containers:
 
-    $ docker-compose rm --all
+    $ docker rm $(docker ps -a -q)
 
 Remove all dangling images:
 
     $ docker rmi -f $(docker images -qf dangling=true)
+
+### Remove Images
+
+    $ docker image prune -a
+
+### Testing
+
+NOTE: Make sure that you are running the app with Docker Compose
+
+To run all unit tests:
+
+    $ docker-compose exec website py.test snakeeyes/tests
+
+Create coverage report:
+
+    $ docker-compose exec website py.test --cov-report term-missing --cov snakeeyes
+
+Check code quality with flake8:
+
+    $ docker-compose exec website flake8 . --exclude __init__.py
 
 ### Deploy to AWS Elastic Beanstalk
 
