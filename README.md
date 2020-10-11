@@ -114,6 +114,20 @@ OR, with option:
 
     $ docker-compose exec website snakeeyes db reset --with-testdb
 
+### Generating Fake Data
+
+Check all add commands:
+
+    $ docker-compose exec website snakeeyes add
+
+Generate all fake data:
+
+    $ docker-compose exec website snakeeyes add all
+
+Generate fake users:
+
+    $ docker-compose exec website snakeeyes add users
+
 ## Deploy to AWS Elastic Beanstalk
 
 Initialize Elastic Beanstalk Application:
