@@ -128,6 +128,24 @@ Generate fake users:
 
     $ docker-compose exec website snakeeyes add users
 
+### Generating Secure Tokens
+
+Generate a secure token with 128 bytes:
+
+    $ docker-compose exec website snakeeyes secret
+
+You can also specify number of bytes you want for the secret:
+
+    $ docker-compose exec website snakeeyes secret [num_bytes]
+
+### Viewing All Route Endpoints
+
+    $ docker-compose exec website snakeeyes routes
+
+### Breaking Down Lines of Code in App
+
+    $ docker-compose exec website snakeeyes loc
+
 ## Deploy to AWS Elastic Beanstalk
 
 Initialize Elastic Beanstalk Application:
