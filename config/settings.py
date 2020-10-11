@@ -30,7 +30,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_REDIS_MAX_CONNECTIONS = 5
 
 # SQLAlchemy.
-db_uri = 'postgresql://snakeeyes:devpassword@postgres:5432/snakeeyes'
+db_uri = config('DB_URI')
 SQLALCHEMY_DATABASE_URI = db_uri
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 

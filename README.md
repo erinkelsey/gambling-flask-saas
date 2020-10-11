@@ -139,3 +139,9 @@ Check status:
 View and/or modify config
 
     $ eb config
+
+In order to get the Postgres database initialized, you will need to login to the server and run the following command in the /var/app/current folder:
+
+    $ docker-compose exec website snakeeyes db reset
+
+In order for the app emails to be sent, you will need to use AWS SES, instead of Gmail, since Gmail blocks any mail sent from AWS EC2.
