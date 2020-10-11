@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from decouple import config
 
+LOG_LEVEL = config('LOG_LEVEL')  # CRITICAL / ERROR / WARNING / INFO / DEBUG
 DEBUG = config("DEBUG", default=False, cast=bool)
 TESTING = config("TESTING", default=False, cast=bool)
 SECRET_KEY = config("SECRET_KEY")
@@ -38,3 +39,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SEED_ADMIN_EMAIL = 'dev@local.host'
 SEED_ADMIN_PASSWORD = 'devpassword'
 REMEMBER_COOKIE_DURATION = timedelta(days=90)
+
+# Google Analytics
+ANALYTICS_GOOGLE_UA = config('ANALYTICS_GOOGLE_UA')

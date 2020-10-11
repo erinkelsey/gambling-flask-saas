@@ -16,4 +16,5 @@ COPY . .
 # For Click CLI
 RUN pip install --editable .
 
-CMD gunicorn -b 0.0.0.0:8000 --access-logfile - "snakeeyes.app:create_app()"
+# CMD gunicorn -b 0.0.0.0:8000 --access-logfile - "snakeeyes.app:create_app()"
+CMD gunicorn -c "python:config.gunicorn" "snakeeyes.app:create_app()"
