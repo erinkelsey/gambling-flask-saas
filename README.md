@@ -8,6 +8,9 @@ Hosted example:
 
 In order to run with Docker Compose locally, you will need a .env file in the main folder with the following environment variables:
 
+NOTE: Redis and PostgreSQL are containers, however in a real production app, they should be separate, and use something like AWS RDS and AWS ElastiCache.
+In order to do this, remove the redis and postgres services from the Docker Compose file, and set the redis and postgres environment variables to those of your external services.
+
 ## Build and Run
 
     $ docker-compose up --build
@@ -54,7 +57,7 @@ Check code quality with flake8:
 
 ## Click CLI
 
-The snackeeyes Click CLI is used to make it easier to run the commands in the above Testing section.
+The snackeeyes Click CLI is used to make commands easier to run.
 
 Create egg.info file:
 
@@ -62,7 +65,7 @@ Create egg.info file:
 
 NOTE: this is include in the repository
 
-### Running Commands
+### Testing Commands
 
 View all CLI commands:
 
@@ -88,6 +91,28 @@ Help:
 Example:
 
     $ docker-compose exec website snakeeyes flake8 --help
+
+### Database Commands
+
+See all database commands:
+
+    $ docker-compose exec website snakeeyes db
+
+Initialize database (or re-initialize):
+
+    $ docker-compose exec website snakeeyes db init
+
+Add seed data to database:
+
+    $ docker-compose exec website snakeeyes db seed
+
+Reset database by initializing and seeding:
+
+    $ docker-compose exec website snakeeyes db reset
+
+OR, with option:
+
+    $ docker-compose exec website snakeeyes db reset --with-testdb
 
 ## Deploy to AWS Elastic Beanstalk
 

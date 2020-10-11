@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from decouple import config
 
 DEBUG = config("DEBUG", default=False, cast=bool)
@@ -26,3 +28,13 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_REDIS_MAX_CONNECTIONS = 5
+
+# SQLAlchemy.
+db_uri = 'postgresql://snakeeyes:devpassword@postgres:5432/snakeeyes'
+SQLALCHEMY_DATABASE_URI = db_uri
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+# User.
+SEED_ADMIN_EMAIL = 'dev@local.host'
+SEED_ADMIN_PASSWORD = 'devpassword'
+REMEMBER_COOKIE_DURATION = timedelta(days=90)
