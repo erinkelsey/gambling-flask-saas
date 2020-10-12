@@ -1,8 +1,6 @@
 # Snake Eyes SaaS Project
 
-Snake Eyes online gambling game, implemented as a SaaS (Software-as-a-Service) app with Flask, Docker, Docker Compose, Stripe, Redis, PostgreSQL, Celery, Gunicorn, nginx and AWS Elastic Beanstalk.
-
-Hosted example:
+Snake Eyes online gambling game, implemented as a SaaS (Software-as-a-Service) app with Flask, Docker, Docker Compose, Stripe, Redis, PostgreSQL, Celery, Gunicorn, and nginx.
 
 ## Setup
 
@@ -120,13 +118,17 @@ Check all add commands:
 
     $ docker-compose exec website snakeeyes add
 
-Generate all fake data:
+Generate all fake data (100 users, numerous invoices):
 
     $ docker-compose exec website snakeeyes add all
 
 Generate fake users:
 
     $ docker-compose exec website snakeeyes add users
+
+Generate fake invoices:
+
+    $ docker-compose exec website snakeeyes add invoices
 
 ### Generating Secure Tokens
 
@@ -145,6 +147,68 @@ You can also specify number of bytes you want for the secret:
 ### Breaking Down Lines of Code in App
 
     $ docker-compose exec website snakeeyes loc
+
+### Stripe
+
+Sync Stripe plans from the config/settings.py file:
+
+    $ docker-compose exec website snakeeyes stripe sync_plans
+
+List all of the Stripe plans:
+
+    $ docker-compose exec website snakeeyes stripe list_plans
+
+Delete a Stripe plan:
+
+    $ docker-compose exec website snakeeyes stripe delete_plans [plan_name]
+
+NOTE: You can delete multiple plans at once, just separate the names with spaces.
+
+## Testing with Stripe
+
+Use the following fake cards to test the Stripe setup.
+
+### Visa:
+
+Name: any name
+Card number: 4242 4242 4242 4242
+Expiry date: any date
+CCV: 123
+
+### MasterCard:
+
+Name: any name
+Card number: 5555 5555 5555 4444
+Expiry date: any date
+CCV: 123
+
+## ngrok For Stripe Webhooks:
+
+You will need an ngrok account.
+
+Download: https://ngrok.com/download
+
+Connect your account:
+
+    $ ./ngrok authtoken [your_auth_token]
+
+Help:
+
+    $ ./ngrok help
+
+Fire it up:
+
+    $ ./ngrok http localhost:8000
+
+Add the HTTP Forwarding address to the SERVER_NAME setting in config/settings.py file.
+
+### Set up the webhook on Stripe:
+
+Go to Developers -> Webhooks -> Endpoints -> Add endpoint
+
+For endpoint address use: http://[your_ngok_address]/stripe_webhook/event
+
+Event types: invoice.created
 
 ## Deploy to AWS Elastic Beanstalk
 

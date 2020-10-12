@@ -38,14 +38,23 @@ services:
       - 8000
     env_file:
       - .env
+    restart: "always"
 
   celery:
     build: .
-    command: celery worker -l info -A snakeeyes.blueprints.contact.tasks
+    command: celery worker -B -l info -A snakeeyes.blueprints.contact.tasks
     env_file:
       - .env
     volumes:
       - .:/snakeeyes
+
+  # celery_beat:
+  #   build: .
+  #   command: celery beat -l info -A snakeeyes.blueprints.contact.tasks
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - .:/snakeeyes
 
   nginx:
     build: ./services/nginx
