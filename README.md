@@ -292,6 +292,10 @@ In order to get the Postgres database initialized, you will need to login to the
 
     $ docker-compose exec website snakeeyes db reset
 
+Setting up plans on Stripe:
+
+    $ docker-compose exec website snakeeyes stripe sync_plans
+
 And if you want to add seed data:
 
     $ docker-compose exec website snakeeyes add all
