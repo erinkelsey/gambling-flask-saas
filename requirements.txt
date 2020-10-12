@@ -20,6 +20,7 @@ Click==6.4
 psycopg2-binary==2.8.6
 Flask-SQLAlchemy==2.1
 SQLAlchemy==1.2.0
+alembic==0.8.6
 redis==3.3.7
 celery==4.4.0
 
@@ -39,3 +40,4 @@ flask-debugtoolbar==0.10.0
 Flask-Mail==0.9.1
 Flask-Login==0.3.2
 Flask-Limiter==0.9.3
+Flask-Babel==0.9

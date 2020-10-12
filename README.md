@@ -214,6 +214,32 @@ For endpoint address use: http://[your_ngok_address]/stripe_webhook/event
 
 Event types: invoice.created
 
+## Database Migrations:
+
+Create a migration manually with Alembic:
+
+    $ docker-compose exec --user "$(id -u):$(id -g)" website alembic revision -m "[description]"
+
+Run migration upgrade:
+
+    $ docker-compose exec website alembic upgrade head
+
+Downgrade migration by one:
+
+    $ docker-compose exec website alembic downgrade -1
+
+Get the current revision:
+
+    $ docker-compose exec website alembic current
+
+Get revision history:
+
+    $ docker-compose exec website alembic history --verbose
+
+Auto-generate migration scripts:
+
+    $ docker-compose exec --user "$(id -u):$(id -g)" website alembic revision --autogenerate -m "[description]"
+
 ## Deploy to AWS Elastic Beanstalk
 
 Initialize Elastic Beanstalk Application:
