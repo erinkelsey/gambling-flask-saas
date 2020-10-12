@@ -1,4 +1,5 @@
 import datetime
+import json
 
 import pytest
 import pytz
@@ -12,15 +13,15 @@ from snakeeyes.blueprints.user.models import User
 from snakeeyes.blueprints.billing.models.credit_card import CreditCard
 from snakeeyes.blueprints.billing.models.coupon import Coupon
 from snakeeyes.blueprints.billing.models.subscription import Subscription
-from snakeeyes.blueprints.billing.gateways.stripecom import \
-    Coupon as PaymentCoupon
-from snakeeyes.blueprints.billing.gateways.stripecom import \
-    Event as PaymentEvent
-from snakeeyes.blueprints.billing.gateways.stripecom import Card as PaymentCard
-from snakeeyes.blueprints.billing.gateways.stripecom import \
-    Subscription as PaymentSubscription
-from snakeeyes.blueprints.billing.gateways.stripecom import \
-    Invoice as PaymentInvoice
+from snakeeyes.blueprints.billing.gateways.stripecom import (
+    Coupon as PaymentCoupon,
+    Event as PaymentEvent,
+    Card as PaymentCard,
+    Subscription as PaymentSubscription,
+    Invoice as PaymentInvoice,
+    Customer as PaymentCustomer,
+    Charge as PaymentCharge
+)
 
 
 @pytest.yield_fixture(scope='session')
@@ -76,7 +77,8 @@ def db(app):
     params = {
         'role': 'admin',
         'email': 'admin@local.host',
-        'password': 'password'
+        'password': 'password',
+        'coins': 100
     }
 
     admin = User(**params)
@@ -212,7 +214,7 @@ def coupons(db):
             'redeem_by': june_29_2015
         },
         {
-            'amount_off': 1
+            'percent_off': 0.33
         }
     ]
 
@@ -285,9 +287,31 @@ def mock_stripe():
     PaymentCoupon.delete = Mock(return_value={})
     PaymentEvent.retrieve = Mock(return_value={})
     PaymentCard.update = Mock(return_value={})
-    PaymentSubscription.create = Mock(return_value={})
     PaymentSubscription.update = Mock(return_value={})
     PaymentSubscription.cancel = Mock(return_value={})
+
+    # Convert a JSON string into Python attributes.
+    #   Source: http://stackoverflow.com/a/25318577
+    class AtoD(dict):
+        def __init__(self, *args, **kwargs):
+            super(AtoD, self).__init__(*args, **kwargs)
+            self.__dict__ = self
+
+    customer_api = """{
+        "id": "cus_000",
+        "sources": {
+            "data": [
+              {
+                "brand": "Visa",
+                "exp_month": 6,
+                "exp_year": 2023,
+                "last4": "4242"
+              }
+            ]
+        }
+    }"""
+    PaymentCustomer.create = Mock(return_value=json.loads(customer_api,
+                                                          object_hook=AtoD))
 
     upcoming_invoice_api = {
         'date': 1433018770,
@@ -364,3 +388,71 @@ def mock_stripe():
         'receipt_number': None
     }
     PaymentInvoice.upcoming = Mock(return_value=upcoming_invoice_api)
+
+    charge_create_api = {
+      'id': 'ch_000',
+      'object': 'charge',
+      'amount': 825,
+      'amount_refunded': 0,
+      'application_fee': None,
+      'balance_transaction': 'txn_000',
+      'captured': True,
+      'created': 1461334393,
+      'currency': 'usd',
+      'customer': 'cus_000',
+      'description': None,
+      'destination': None,
+      'dispute': None,
+      'failure_code': None,
+      'failure_message': None,
+      'fraud_details': {
+      },
+      'invoice': None,
+      'livemode': False,
+      'metadata': {
+      },
+      'order': None,
+      'paid': True,
+      'receipt_email': None,
+      'receipt_number': None,
+      'refunded': False,
+      'refunds': {
+        'object': 'list',
+        'data': [
+
+        ],
+        'has_more': False,
+        'total_count': 0,
+        'url': '/v1/charges/ch_000/refunds'
+      },
+      'shipping': None,
+      'source': {
+        'id': 'card_000',
+        'object': 'card',
+        'address_city': None,
+        'address_country': None,
+        'address_line1': None,
+        'address_line1_check': None,
+        'address_line2': None,
+        'address_state': None,
+        'address_zip': None,
+        'address_zip_check': None,
+        'brand': 'Visa',
+        'country': 'US',
+        'customer': 'cus_000',
+        'cvc_check': 'pass',
+        'dynamic_last4': None,
+        'exp_month': 12,
+        'exp_year': 2030,
+        'funding': 'credit',
+        'last4': '4242',
+        'metadata': {
+        },
+        'name': None,
+        'tokenization_method': None
+      },
+      'source_transfer': None,
+      'statement_descriptor': 'SNAKEEYES COINS',
+      'status': 'succeeded'
+    }
+    PaymentCharge.create = Mock(return_value=charge_create_api)

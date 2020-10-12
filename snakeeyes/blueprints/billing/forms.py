@@ -1,9 +1,26 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField
+from wtforms import StringField, HiddenField, SelectField
 from wtforms.validators import DataRequired, Optional, Length
 
+from config.settings import COIN_BUNDLES
 
-class CreditCardForm(FlaskForm):
+
+def choices_from_coin_bundles():
+    """
+    Convert the COIN_BUNDLE settings into select box items.
+
+    :return: list
+    """
+    choices = []
+
+    for bundle in COIN_BUNDLES:
+        pair = (str(bundle.get('coins')), bundle.get('label'))
+        choices.append(pair)
+
+    return choices
+
+
+class SubscriptionForm(FlaskForm):
     stripe_key = HiddenField('Stripe publishable key',
                              [DataRequired(), Length(1, 254)])
     plan = HiddenField('Plan',
@@ -21,3 +38,14 @@ class UpdateSubscriptionForm(FlaskForm):
 
 class CancelSubscriptionForm(FlaskForm):
     pass
+
+
+class PaymentForm(FlaskForm):
+    stripe_key = HiddenField('Stripe publishable key',
+                             [DataRequired(), Length(1, 254)])
+    coin_bundles = SelectField('How many coins do you want?', [DataRequired()],
+                               choices=choices_from_coin_bundles())
+    coupon_code = StringField('Do you have a coupon code?',
+                              [Optional(), Length(1, 128)])
+    name = StringField('Name on card',
+                       [DataRequired(), Length(1, 254)])

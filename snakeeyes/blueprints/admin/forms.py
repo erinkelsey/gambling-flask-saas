@@ -91,7 +91,7 @@ class CouponForm(FlaskForm):
                               format='%Y-%m-%d %H:%M:%S')
 
     def validate(self):
-        if not Form.validate(self):
+        if not FlaskForm.validate(self):
             return False
 
         result = True

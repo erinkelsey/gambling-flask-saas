@@ -174,17 +174,17 @@ Use the following fake cards to test the Stripe setup.
 
 ### Visa:
 
-Name: any name
-Card number: 4242 4242 4242 4242
-Expiry date: any date
-CCV: 123
+    Name: any name
+    Card number: 4242 4242 4242 4242
+    Expiry date: any date
+    CCV: 123
 
 ### MasterCard:
 
-Name: any name
-Card number: 5555 5555 5555 4444
-Expiry date: any date
-CCV: 123
+    Name: any name
+    Card number: 5555 5555 5555 4444
+    Expiry date: any date
+    CCV: 123
 
 ## ngrok For Stripe Webhooks:
 

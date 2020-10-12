@@ -3,6 +3,7 @@ import datetime
 import pytz
 
 from lib.money import cents_to_dollars, dollars_to_cents
+from snakeeyes.blueprints.user.models import User
 from snakeeyes.blueprints.billing.models.credit_card import CreditCard
 from snakeeyes.blueprints.billing.models.coupon import Coupon
 from snakeeyes.blueprints.billing.models.invoice import Invoice
@@ -206,9 +207,9 @@ class TestInvoice(object):
         parsed_payload = Invoice.parse_from_event(event_payload)
 
         assert parsed_payload['payment_id'] == 'cus_000'
-        assert parsed_payload['plan'] == 'Gold'
+        assert parsed_payload['plan'] == 'gold'
         assert parsed_payload['receipt_number'] == '0009000'
-        assert parsed_payload['description'] == 'GOLD MONTHLY'
+        assert parsed_payload['description'] == 'SNAKEEYES GOLD'
         assert parsed_payload['period_start_on'] == datetime.date(2015, 6, 1)
         assert parsed_payload['period_end_on'] == datetime.date(2015, 6, 15)
         assert parsed_payload['currency'] == 'usd'
@@ -227,3 +228,13 @@ class TestInvoice(object):
         assert parsed_payload['next_bill_on'] == next_bill_on
         assert parsed_payload['amount_due'] == 500
         assert parsed_payload['interval'] == 'month'
+
+    def test_invoice_create(self, users, mock_stripe):
+        """ Successfully create an invoice item. """
+        user = User.find_by_identity('admin@local.host')
+
+        invoice = Invoice()
+        invoice.create(user=user, currency='usd', amount='900', coins=1000,
+                       coupon=None, token='cus_000')
+
+        assert user.coins == 1100
