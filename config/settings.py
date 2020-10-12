@@ -26,6 +26,14 @@ MAIL_PORT = config('MAIL_PORT')
 MAIL_USE_TLS = True
 MAIL_USE_SSL = False
 
+# Flask-Babel.
+LANGUAGES = {
+    'en': 'English',
+    'kl': 'Klingon',
+    'es': 'Spanish'
+}
+BABEL_DEFAULT_LOCALE = 'en'
+
 # Celery.
 CELERY_BROKER_URL = config('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')

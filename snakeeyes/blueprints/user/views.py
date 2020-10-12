@@ -20,7 +20,8 @@ from snakeeyes.blueprints.user.forms import (
     PasswordResetForm,
     SignupForm,
     WelcomeForm,
-    UpdateCredentials)
+    UpdateCredentialsForm,
+    UpdateLocaleForm)
 
 user = Blueprint('user', __name__, template_folder='templates')
 
@@ -153,7 +154,7 @@ def settings():
 @user.route('/settings/update_credentials', methods=['GET', 'POST'])
 @login_required
 def update_credentials():
-    form = UpdateCredentials(current_user, uid=current_user.id)
+    form = UpdateCredentialsForm(current_user, uid=current_user.id)
 
     if form.validate_on_submit():
         new_password = request.form.get('password', '')
@@ -168,3 +169,18 @@ def update_credentials():
         return redirect(url_for('user.settings'))
 
     return render_template('user/update_credentials.html', form=form)
+
+
+@user.route('/settings/update_locale', methods=['GET', 'POST'])
+@login_required
+def update_locale():
+    form = UpdateLocaleForm(locale=current_user.locale)
+
+    if form.validate_on_submit():
+        form.populate_obj(current_user)
+        current_user.save()
+
+        flash('Your locale settings have been updated.', 'success')
+        return redirect(url_for('user.settings'))
+
+    return render_template('user/update_locale.html', form=form)

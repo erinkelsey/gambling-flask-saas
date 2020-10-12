@@ -64,6 +64,9 @@ class User(UserMixin, ResourceMixin, db.Model):
     last_sign_in_on = db.Column(AwareDateTime())
     last_sign_in_ip = db.Column(db.String(45))
 
+    # Additional settings.
+    locale = db.Column(db.String(5), nullable=False, server_default='en')
+
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super(User, self).__init__(**kwargs)

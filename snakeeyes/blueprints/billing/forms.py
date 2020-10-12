@@ -1,3 +1,4 @@
+from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from wtforms import StringField, HiddenField, SelectField
 from wtforms.validators import DataRequired, Optional, Length
@@ -21,18 +22,18 @@ def choices_from_coin_bundles():
 
 
 class SubscriptionForm(FlaskForm):
-    stripe_key = HiddenField('Stripe publishable key',
+    stripe_key = HiddenField(_('Stripe publishable key'),
                              [DataRequired(), Length(1, 254)])
-    plan = HiddenField('Plan',
+    plan = HiddenField(_('Plan'),
                        [DataRequired(), Length(1, 254)])
-    coupon_code = StringField('Do you have a coupon code?',
+    coupon_code = StringField(_('Do you have a coupon code?'),
                               [Optional(), Length(1, 128)])
-    name = StringField('Name on card',
+    name = StringField(_('Name on card'),
                        [DataRequired(), Length(1, 254)])
 
 
 class UpdateSubscriptionForm(FlaskForm):
-    coupon_code = StringField('Do you have a coupon code?',
+    coupon_code = StringField(_('Do you have a coupon code?'),
                               [Optional(), Length(1, 254)])
 
 
@@ -41,11 +42,12 @@ class CancelSubscriptionForm(FlaskForm):
 
 
 class PaymentForm(FlaskForm):
-    stripe_key = HiddenField('Stripe publishable key',
+    stripe_key = HiddenField(_('Stripe publishable key'),
                              [DataRequired(), Length(1, 254)])
-    coin_bundles = SelectField('How many coins do you want?', [DataRequired()],
+    coin_bundles = SelectField(_('How many coins do you want?'),
+                               [DataRequired()],
                                choices=choices_from_coin_bundles())
-    coupon_code = StringField('Do you have a coupon code?',
+    coupon_code = StringField(_('Do you have a coupon code?'),
                               [Optional(), Length(1, 128)])
-    name = StringField('Name on card',
+    name = StringField(_('Name on card'),
                        [DataRequired(), Length(1, 254)])

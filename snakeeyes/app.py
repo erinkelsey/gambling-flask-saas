@@ -5,7 +5,8 @@ from logging.handlers import SMTPHandler
 import stripe
 
 from werkzeug.contrib.fixers import ProxyFix
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from flask_login import current_user
 from celery import Celery
 from itsdangerous import URLSafeTimedSerializer
 
@@ -18,7 +19,7 @@ from snakeeyes.blueprints.billing import stripe_webhook
 from snakeeyes.blueprints.bet import bet
 from snakeeyes.blueprints.user.models import User
 from snakeeyes.blueprints.billing.template_processors import format_currency, current_year
-from snakeeyes.extensions import debug_toolbar, mail, csrf, db, login_manager, limiter
+from snakeeyes.extensions import debug_toolbar, mail, csrf, db, login_manager, limiter, babel
 
 CELERY_TASK_LIST = [
     'snakeeyes.blueprints.contact.tasks',
@@ -86,6 +87,7 @@ def create_app(settings_override=None):
     template_processors(app)
     extensions(app)
     authentication(app, User)
+    locale(app)
 
     return app
 
@@ -102,6 +104,7 @@ def extensions(app):
     db.init_app(app)
     login_manager.init_app(app)
     limiter.init_app(app)
+    babel.init_app(app)
 
     return None
 
@@ -143,6 +146,22 @@ def authentication(app, user_model):
         user_uid = data[0]
 
         return user_model.query.get(user_uid)
+
+
+def locale(app):
+    """
+    Initialize a locale for the current request.
+
+    :param app: Flask application instance
+    :return: str
+    """
+    @babel.localeselector
+    def get_locale():
+        if current_user.is_authenticated:
+            return current_user.locale
+
+        accept_languages = app.config.get('LANGUAGES').keys()
+        return request.accept_languages.best_match(accept_languages)
 
 
 def middleware(app):

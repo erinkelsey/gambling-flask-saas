@@ -168,6 +168,24 @@ Delete a Stripe plan:
 
 NOTE: You can delete multiple plans at once, just separate the names with spaces.
 
+### Translations with Babel
+
+Extract translations from files into pot file:
+
+     $ docker-compose exec --user "$(id -u):$(id -g)" website snakeeyes babel extract
+
+Update translations:
+
+    $ docker-compose exec --user "$(id -u):$(id -g)" website snakeeyes babel update
+
+Compile new translations:
+
+    $ docker-compose exec --user "$(id -u):$(id -g)" website snakeeyes babel compile
+
+Crete new languages:
+
+    $ docker-compose exec --user "$(id -u):$(id -g)" website snakeeyes babel init --language [language_code]
+
 ## Testing with Stripe
 
 Use the following fake cards to test the Stripe setup.
