@@ -52,6 +52,7 @@ class Invoice(ResourceMixin, db.Model):
 
         return invoices
 
+    @classmethod
     def parse_from_event(cls, payload):
         """
         Parse and return the invoice information that will get saved locally.
