@@ -12,7 +12,7 @@ if DEBUG or TESTING:
     SERVER_NAME = 'localhost'
 
 # ngrok
-SERVER_NAME = '815237b8bad7.ngrok.io'
+# SERVER_NAME = '815237b8bad7.ngrok.io'
 
 # Toolbar
 DEBUG_TB_INTERCEPT_REDIRECTS = False

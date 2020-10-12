@@ -240,4 +240,8 @@ In order to get the Postgres database initialized, you will need to login to the
 
     $ docker-compose exec website snakeeyes db reset
 
+And if you want to add seed data:
+
+    $ docker-compose exec website snakeeyes add all
+
 In order for the app emails to be sent, you will need to use AWS SES, instead of Gmail, since Gmail blocks any mail sent from AWS EC2.
