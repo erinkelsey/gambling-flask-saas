@@ -62,6 +62,8 @@ services:
       - 80:80
     depends_on:
       - website
+    volumes:
+      - /etc/letsencrypt/live:/etc/letsencrypt/live
 
 volumes:
   postgres:
