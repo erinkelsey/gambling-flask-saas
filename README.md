@@ -37,6 +37,10 @@ Remove all dangling images:
 
     $ docker image prune -a
 
+### Remove Volumes
+
+    $ docker volume rm $(docker volume ls -q)
+
 ## Testing
 
 NOTE: Make sure that you are running the app with Docker Compose
@@ -291,5 +295,7 @@ In order to get the Postgres database initialized, you will need to login to the
 And if you want to add seed data:
 
     $ docker-compose exec website snakeeyes add all
+
+NOTE: you need to run the above commands as root
 
 In order for the app emails to be sent, you will need to use AWS SES, instead of Gmail, since Gmail blocks any mail sent from AWS EC2.
