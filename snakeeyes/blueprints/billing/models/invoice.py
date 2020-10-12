@@ -52,7 +52,6 @@ class Invoice(ResourceMixin, db.Model):
 
         return invoices
 
-    @classmethod
     def parse_from_event(cls, payload):
         """
         Parse and return the invoice information that will get saved locally.
@@ -64,14 +63,21 @@ class Invoice(ResourceMixin, db.Model):
 
         period_start_on = datetime.datetime.utcfromtimestamp(
             data['lines']['data'][0]['period']['start']).date()
+
         period_end_on = datetime.datetime.utcfromtimestamp(
             data['lines']['data'][0]['period']['end']).date()
 
+        description = ""
+        # Grab Correct Plan
+        for key, value in settings.STRIPE_PLANS.items():
+            if value.get('id') == plan_info['id']:
+                description = value.get('statement_descriptor')
+
         invoice = {
             'payment_id': data['customer'],
-            'plan': plan_info['name'],
+            'plan': plan_info['id'],
             'receipt_number': data['receipt_number'],
-            'description': plan_info['statement_descriptor'],
+            'description': description,
             'period_start_on': period_start_on,
             'period_end_on': period_end_on,
             'currency': data['currency'],
@@ -81,6 +87,36 @@ class Invoice(ResourceMixin, db.Model):
         }
 
         return invoice
+
+    # @classmethod
+    # def parse_from_event(cls, payload):
+    #     """
+    #     Parse and return the invoice information that will get saved locally.
+
+    #     :return: dict
+    #     """
+    #     data = payload['data']['object']
+    #     plan_info = data['lines']['data'][0]['plan']
+
+    #     period_start_on = datetime.datetime.utcfromtimestamp(
+    #         data['lines']['data'][0]['period']['start']).date()
+    #     period_end_on = datetime.datetime.utcfromtimestamp(
+    #         data['lines']['data'][0]['period']['end']).date()
+
+    #     invoice = {
+    #         'payment_id': data['customer'],
+    #         'plan': plan_info['name'],
+    #         'receipt_number': data['receipt_number'],
+    #         'description': plan_info['statement_descriptor'],
+    #         'period_start_on': period_start_on,
+    #         'period_end_on': period_end_on,
+    #         'currency': data['currency'],
+    #         'tax': data['tax'],
+    #         'tax_percent': data['tax_percent'],
+    #         'total': data['total']
+    #     }
+
+    #     return invoice
 
     @classmethod
     def parse_from_api(cls, payload):
