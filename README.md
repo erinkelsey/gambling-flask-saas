@@ -6,8 +6,40 @@ Snake Eyes online gambling game, implemented as a SaaS (Software-as-a-Service) a
 
 In order to run with Docker Compose locally, you will need a .env file in the main folder with the following environment variables:
 
+    # Project.
+    COMPOSE_PROJECT_NAME=snakeeyes
+
+    LOG_LEVEL=DEBUG
+    DEBUG=True
+    TESTING=False
+    SECRET_KEY=mysecretkey
+    SERVER_NAME=localhost
+
+    # Flask-Mail.
+    MAIL_USERNAME=youremail@gmail.com
+    MAIL_PASSWORD=yourpassword
+    MAIL_DEFAULT_SENDER=contact@local.host
+    MAIL_SERVER=smtp.gmail.com
+    MAIL_PORT=587
+
+    # Celery.
+    CELERY_BROKER_URL=redis://:devpassword@redis:6379/0
+    CELERY_RESULT_BACKEND=redis://:devpassword@redis:6379/0
+
+    # Postgres.
+    POSTGRES_USER=snakeeyes
+    POSTGRES_PASSWORD=devpassword
+    DB_URI=postgresql://snakeeyes:devpassword@postgres:5432/snakeeyes
+
+    # Google Analytics.
+    ANALYTICS_GOOGLE_UA=foo
+
+    # Stripe.
+    STRIPE_PUBLISHABLE_KEY=your_stripe_publishabled_key
+    STRIPE_SECRET_KEY=your_stripe_secret_key
+
 NOTE: Redis and PostgreSQL are containers, however in a real production app, they should be separate, and use something like AWS RDS and AWS ElastiCache.
-In order to do this, remove the redis and postgres services from the Docker Compose file, and set the redis and postgres environment variables to those of your external services.
+In order to do this, remove the redis, celery and postgres services from the Docker Compose file, and set the redis and postgres environment variables to those of your external services.
 
 ## Build and Run
 
