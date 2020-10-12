@@ -4,12 +4,12 @@ from celery.schedules import crontab
 from decouple import config
 
 LOG_LEVEL = config('LOG_LEVEL')  # CRITICAL / ERROR / WARNING / INFO / DEBUG
-DEBUG = config("DEBUG", default=False, cast=bool)
-TESTING = config("TESTING", default=False, cast=bool)
-SECRET_KEY = config("SECRET_KEY")
+DEBUG = config('DEBUG', default=False, cast=bool)
+TESTING = config('TESTING', default=False, cast=bool)
+SECRET_KEY = config('SECRET_KEY')
 
 if DEBUG or TESTING:
-    SERVER_NAME = 'localhost'
+    SERVER_NAME = config('SERVER_NAME')
 
 # ngrok
 # SERVER_NAME = '815237b8bad7.ngrok.io'
@@ -18,17 +18,17 @@ if DEBUG or TESTING:
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 # Flask-Mail.
-MAIL_USERNAME = config("MAIL_USERNAME")
-MAIL_PASSWORD = config("MAIL_PASSWORD")
-MAIL_DEFAULT_SENDER = config("MAIL_DEFAULT_SENDER")
-MAIL_SERVER = config("MAIL_SERVER")
-MAIL_PORT = config("MAIL_PORT")
+MAIL_USERNAME = config('MAIL_USERNAME')
+MAIL_PASSWORD = config('MAIL_PASSWORD')
+MAIL_DEFAULT_SENDER = config('MAIL_DEFAULT_SENDER')
+MAIL_SERVER = config('MAIL_SERVER')
+MAIL_PORT = config('MAIL_PORT')
 MAIL_USE_TLS = True
 MAIL_USE_SSL = False
 
 # Celery.
-CELERY_BROKER_URL = config("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND")
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -71,7 +71,9 @@ STRIPE_PLANS = {
         'interval_count': 1,
         'trial_period_days': 14,
         'statement_descriptor': 'SNAKEEYES BRONZE',
-        'metadata': {}
+        'metadata': {
+            'coins': 110
+        }
     },
     '1': {
         'id': 'gold',
@@ -83,6 +85,7 @@ STRIPE_PLANS = {
         'trial_period_days': 14,
         'statement_descriptor': 'SNAKEEYES GOLD',
         'metadata': {
+            'coins': 600,
             'recommended': True
         }
     },
@@ -95,6 +98,27 @@ STRIPE_PLANS = {
         'interval_count': 1,
         'trial_period_days': 14,
         'statement_descriptor': 'SNAKEEYES PLATINUM',
-        'metadata': {}
+        'metadata': {
+            'coins': 1500
+        }
     }
 }
+
+# Bet.
+DICE_ROLL_PAYOUT = {
+    '2': 36.0,
+    '3': 18.0,
+    '4': 12.0,
+    '5': 9.0,
+    '6': 7.2,
+    '7': 6.0,
+    '8': 7.2,
+    '9': 9.0,
+    '10': 12.0,
+    '11': 18.0,
+    '12': 36.0
+}
+
+RATELIMIT_STORAGE_URL = CELERY_BROKER_URL
+RATELIMIT_STRATEGY = 'fixed-window-elastic-expiry'
+RATELIMIT_HEADERS_ENABLED = True

@@ -118,7 +118,7 @@ Check all add commands:
 
     $ docker-compose exec website snakeeyes add
 
-Generate all fake data (100 users, numerous invoices):
+Generate all fake data (100 users, numerous invoices, numerous bets):
 
     $ docker-compose exec website snakeeyes add all
 
@@ -129,6 +129,10 @@ Generate fake users:
 Generate fake invoices:
 
     $ docker-compose exec website snakeeyes add invoices
+
+Generate fake bets:
+
+    $ docker-compose exec website snakeeyes add bets
 
 ### Generating Secure Tokens
 

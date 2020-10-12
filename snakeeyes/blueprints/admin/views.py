@@ -41,11 +41,13 @@ def dashboard():
     group_and_count_plans = Dashboard.group_and_count_plans()
     group_and_count_coupons = Dashboard.group_and_count_coupons()
     group_and_count_users = Dashboard.group_and_count_users()
+    group_and_count_payouts = Dashboard.group_and_count_payouts()
 
     return render_template('admin/page/dashboard.html',
                            group_and_count_plans=group_and_count_plans,
                            group_and_count_coupons=group_and_count_coupons,
-                           group_and_count_users=group_and_count_users)
+                           group_and_count_users=group_and_count_users,
+                           group_and_count_payouts=group_and_count_payouts)
 
 
 # Users -----------------------------------------------------------------------

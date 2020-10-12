@@ -41,6 +41,9 @@ class BulkDeleteForm(FlaskForm):
 class UserForm(ModelForm):
     username_message = 'Letters, numbers and underscores only please.'
 
+    coins = IntegerField('Coins', [DataRequired(),
+                                   NumberRange(min=1, max=2147483647)])
+
     username = StringField(validators=[
         Unique(
             User.username,
@@ -88,7 +91,7 @@ class CouponForm(FlaskForm):
                               format='%Y-%m-%d %H:%M:%S')
 
     def validate(self):
-        if not FlaskForm.validate(self):
+        if not Form.validate(self):
             return False
 
         result = True

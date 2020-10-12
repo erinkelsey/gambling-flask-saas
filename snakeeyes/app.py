@@ -15,9 +15,10 @@ from snakeeyes.blueprints.contact import contact
 from snakeeyes.blueprints.user import user
 from snakeeyes.blueprints.billing import billing
 from snakeeyes.blueprints.billing import stripe_webhook
+from snakeeyes.blueprints.bet import bet
 from snakeeyes.blueprints.user.models import User
 from snakeeyes.blueprints.billing.template_processors import format_currency, current_year
-from snakeeyes.extensions import debug_toolbar, mail, csrf, db, login_manager
+from snakeeyes.extensions import debug_toolbar, mail, csrf, db, login_manager, limiter
 
 CELERY_TASK_LIST = [
     'snakeeyes.blueprints.contact.tasks',
@@ -81,6 +82,7 @@ def create_app(settings_override=None):
     app.register_blueprint(user)
     app.register_blueprint(billing)
     app.register_blueprint(stripe_webhook)
+    app.register_blueprint(bet)
     template_processors(app)
     extensions(app)
     authentication(app, User)
@@ -99,6 +101,7 @@ def extensions(app):
     csrf.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+    limiter.init_app(app)
 
     return None
 
@@ -177,7 +180,7 @@ def error_templates(app):
         code = getattr(status, 'code', 500)
         return render_template('errors/{0}.html'.format(code)), code
 
-    for error in [404, 500]:
+    for error in [404, 429, 500]:
         app.errorhandler(error)(render_status)
 
     return None
