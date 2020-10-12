@@ -4,6 +4,7 @@ from lib.util_sqlalchemy import ResourceMixin
 from snakeeyes.extensions import db
 from snakeeyes.blueprints.billing.gateways.stripecom import \
     Invoice as PaymentInvoice
+from config import settings
 
 
 class Invoice(ResourceMixin, db.Model):
