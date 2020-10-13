@@ -39,7 +39,7 @@ In order to run with Docker Compose locally, you will need a .env file in the ma
     STRIPE_SECRET_KEY=your_stripe_secret_key
 
 NOTE: Redis and PostgreSQL are containers, however in a real production app, they should be separate, and use something like AWS RDS and AWS ElastiCache.
-In order to do this, remove the redis and postgres services from the Docker Compose file, and set the redis, celery postgres environment variables to those of your external services.
+In order to do this, remove the redis and postgres services from the Docker Compose file, and set the redis, celery and postgres environment variables to those of your external services.
 
 ## Build and Run
 
