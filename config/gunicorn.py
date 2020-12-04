@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import os
+
+print(os.environ.get("PORT"))
 
 bind = '0.0.0.0:8000'
 accesslog = '-'
