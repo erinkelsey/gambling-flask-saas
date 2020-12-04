@@ -3,13 +3,9 @@ build:
     website: Dockerfile
     nginx: /services/nginx/Dockerfile
 run:
+  nginx: sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
   website: gunicorn -c "python:config.gunicorn" --reload "snakeeyes.app:create_app()"
   celery:
     command:
       - celery worker -B -l info -A snakeeyes.blueprints.contact.tasks
     image: website
-  nginx:
-    command:
-      - sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
-    depends_on:
-      - website
