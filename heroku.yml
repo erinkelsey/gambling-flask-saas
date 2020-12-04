@@ -1,0 +1,7 @@
+build:
+  docker:
+    website: Dockerfile
+    celery: Dockerfile
+run:
+  website: gunicorn -c "python:config.gunicorn" --reload "snakeeyes.app:create_app()"
+  celery: celery worker -B -l info -A snakeeyes.blueprints.contact.tasks
