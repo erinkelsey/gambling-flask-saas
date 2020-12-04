@@ -34,6 +34,7 @@ LANGUAGES = {
 }
 BABEL_DEFAULT_LOCALE = 'en'
 
+
 # Celery.
 CELERY_BROKER_URL = os.environ.get("REDIS_URL") or config('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL") or config('CELERY_RESULT_BACKEND')
